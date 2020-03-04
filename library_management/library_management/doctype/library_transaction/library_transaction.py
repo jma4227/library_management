@@ -16,14 +16,14 @@ class LibraryTransaction(Document):
 		last_transaction = frappe.get_list("Library Transaction",
 		   fields = ["transaction_type", "transaction_date"],
 		   filters = {
-			   "article": self.article,
+			   "articles": self.articles,
 			   "transaction_date": ("<=", self.transaction_date),
 			   "name": ("!=", self.name)
 		   })
 		if self.transaction_type=="Issue":
 			msg = _("Article {0} {1} has not been recorded as returned since {2}")
 			if last_transaction and last_transaction[0].transaction_type=="Issue":
-				frappe.throw(msg.format(self.article, self.article_name,
+				frappe.throw(msg.format(self.articles, self.article_name,
 										last_transaction[0].transaction_date))
 		else:
 			if not last_transaction or last_transaction[0].transaction_type!="Issue":
