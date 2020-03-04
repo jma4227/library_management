@@ -1,0 +1,13 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Custom Script",
+  "dt": "Library Transaction",
+  "modified": "2020-03-04 10:43:01.584260",
+  "name": "Library Transaction-Client",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "script": "frappe.ui.form.on(\"Library Transaction\", {\r\n    //function to combine member_first_name + member_last_name\r\n    \"library_member\" : function(frm) {\r\n        //call doctype \"Library Member\" with function fappe.client.get\r\n        frappe.call({\r\n            \"method\": \"frappe.client.get\",\r\n            args: {\r\n                doctype: \"Library Member\",\r\n                name: frm.doc.library_member\r\n            },\r\n            callback: function (data) {\r\n                frappe.model.set_value(frm.doctype,\r\n                    frm.docname, \"member_name\",\r\n                    //combines first_name + last_name from Library Member doctype and combines member_name = first_name + last_name\r\n                    data.message.first_name\r\n                    + (data.message.last_name ?\r\n                        //else \" \" + last_name\r\n                        (\" \" + data.message.last_name) : \"\"))\r\n            }\r\n        })\r\n    }\r\n});"
+ }
+]
