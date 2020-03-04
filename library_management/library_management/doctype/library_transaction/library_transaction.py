@@ -12,20 +12,18 @@ from frappe.model.document import Document
 
 class LibraryTransaction(Document):
 	def validate(self):
-		# Get the last transaction before the current transaction date using the query function
 		last_transaction = frappe.get_list("Library Transaction",
-		   fields = ["transaction_type", "transaction_date"],
-		   filters = {
-			   "articles": self.articles,
-			   "transaction_date": ("<=", self.transaction_date),
-			   "name": ("!=", self.name)
-		   })
+										   fields=["transaction_type", "transaction_date"],
+										   filters = {
+											   "articles": self.articles,
+											   "transaction_date": ("<=", self.transaction_date),
+											   "name": ("!=", self.name)
+											   })
 		if self.transaction_type=="Issue":
-			msg = _("Article {0} {1} has not been recorded as returned since {2}")
+			msg = _("Articles {0} {1} has not been recorded as returned since {2}")
 			if last_transaction and last_transaction[0].transaction_type=="Issue":
 				frappe.throw(msg.format(self.articles, self.article_name,
 										last_transaction[0].transaction_date))
 		else:
 			if not last_transaction or last_transaction[0].transaction_type!="Issue":
-				# Throw an exception if not the last transaction or the transaction_type!=Issue
 				frappe.throw(_("Cannot return article not issued"))
