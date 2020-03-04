@@ -127,9 +127,10 @@ app_license = "GNU General Public License"
 # 	"Task": "library_management.task.get_dashboard_data"
 # }
 
-fixtures = [{
+fixtures = [
+	{
 	"doctype": "DocType",
-		"filter": { "custom" : ["=", "1"] }
+		"filters": [["module", "in", ["Library Management"]]]
 	},
 	"Custom Field",
 	"Custom Script",
