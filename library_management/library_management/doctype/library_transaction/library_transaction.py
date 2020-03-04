@@ -27,3 +27,6 @@ class LibraryTransaction(Document):
 		else:
 			if not last_transaction or last_transaction[0].transaction_type!="Issue":
 				frappe.throw(_("Cannot return article not issued"))
+
+#  Add an exception for if Article is not issued to the correct individual, it can only be
+#  returned by that individual.
